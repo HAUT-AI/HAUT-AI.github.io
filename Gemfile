@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+gem 'github-pages'
+gem 'jekyll-minifier'
+gem 'jekyll-babel'
+gem 'jekyll-fontawesome-svg', '~> 0.4.0'

@@ -1,0 +1,165 @@
+---
+layout: default
+permalink: /
+---
+
+<div id="service">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2># 线上服务 </h2>
+      </div>
+    </div>
+    <div class="row centered" id="service-list">
+      <div class="col-md-3 col-xs-6">
+        <a href="https://github.com/HAUT-AI">{% include pic.html name="homepage/github-128" %}</a>
+        <h4>GitHub社团号 <a href="https://github.com/HAUT-AI/">{% fa_svg far.fa-hand-point-right %}</i></a></h4>
+        <p>开源共享</p>
+      </div>
+      <div class="col-md-3 col-xs-6">
+        <a href="https://space.bilibili.com/3493273823873601">{% include pic.html name="homepage/bilibili-128" %}</a>
+        <h4>bilibili社团号 <a href="https://space.bilibili.com/3493273823873601">{% fa_svg far.fa-hand-point-right
+            %}</i></a></h4>
+        <p>学习互动</p>
+      </div>
+    </div>
+  </div><!--/container -->
+</div><!--/service -->
+
+<div class="container">
+  <div class="row">
+    <div id="recent-events" class="col-md-6 col-md-push-6">
+      <h2> # 活动公告 </h2>
+      {% for event in site.categories['event'] limit:5 %}
+      <div class="event" data-event-date="{{event.date | date: " %F"}}">
+        <div class="event-title">
+          <a href="{{ event.url | prepend: site.baseurl }}">
+            <h4>{{ event.title }}</h4>
+          </a>
+        </div>
+        <div class="event-meta">
+          <span><strong>时间: </strong>{{event.date | date: "%F"}}{% if event.time %} {{event.time}} {% endif %}</span>
+          <span><strong>地点:</strong> {{event.place}}</span>
+          <span class="event-status">
+          </span>
+          {% if event.video or event.slides or event.youtube or event.audio %}
+          <br>
+          <span><strong>资源链接: </strong></span>
+          {% if event.audio %}
+          <a data-toggle="tooltip" title="录音下载" class="label label-info" href="{{event.audio}}" target="_blank">{%
+            fa_svg fas.fa-headphones %}</a>
+          {% endif %}
+          {% if event.video %}
+          <a data-toggle="tooltip" title="录像下载" class="label label-info" href="{{event.video}}" target="_blank">{%
+            fa_svg fas.fa-video %}</a>
+          {% endif %}
+          {% if event.youtube %}
+          <a data-toggle="tooltip" title="YouTube 在线播放" class="label label-info" href="{{event.youtube}}"
+            target="_blank">{% fa_svg fab.fa-youtube %}</a>
+          {% endif %}
+          {% if event.slides %}
+          <a data-toggle="tooltip" title="讲稿下载" class="label label-info" href="{{event.slides}}" target="_blank">{%
+            fa_svg fas.fa-file %}</a>
+          {% endif %}
+          {% endif %}
+        </div>
+        <div class="event-abstract">
+          {{ event.excerpt | strip_html | truncate: 240, '...'}}
+        </div>
+      </div>
+      {% endfor %}
+      <div>
+        <a href={{"/events/"|prepend: site.baseurl}}>{% fa_svg far.fa-hand-point-right %} 所有活动</a>
+      </div>
+    </div>
+    <div id="recent-posts" class="col-md-6 col-md-pull-6">
+      <h2> # 最近文章 </h2>
+      {% for post in site.categories['blog'] limit:5 %}
+      <div class="post">
+        <div class="post-title">
+          <a href="{{ post.url | prepend: site.baseurl }}">
+            <h4>{% fa_svg fas.fa-file-lines %} {{ post.title }}</h4>
+          </a>
+        </div>
+        <div class="post-meta">
+          {{post.author}}, {{post.date | date: "%Y-%-m-%-d"}}
+        </div>
+        <div class="post-abstract">
+          {{ post.excerpt | strip_html | truncate: 240, '...'}}
+        </div>
+      </div>
+      {% endfor %}
+      <div>
+        <a href={{"/blog/"|prepend: site.baseurl}}>{% fa_svg far.fa-hand-point-right %} 所有文章</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div id="join-tuna" class="col-md-12">
+      <h2> # 加入我们 </h2>
+      <h4>订阅邮件列表</h4>
+      <p>填写表单到 <a href="https://docs.qq.com/form/page/DQlJRalJWV0Flelhv">HAUT-AI社团报名表</a>, 并填写邮箱栏。</p>
+      <h4>加入 QQ 群组</h4>
+      <p>详见页面底部的联系方式。</p>
+    </div>
+  </div>
+</div>
+
+<div id="join-button" class="visible-xs">
+  <div class="container">
+    <div class="row">
+      <div class="btn-group btn-group-justified col-xs-12">
+        <a class="btn btn-large btn-success"
+          href="https://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=sZZk51PViMuF1DVDotsqK0REN33kbINQ&group_code=956866352">
+          加入HAUT-AI / Join Us </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+
+    var today = function () {
+      var pad = function (number) {
+        var r = String(number);
+        if (r.length === 1) {
+          r = '0' + r;
+        }
+        return r;
+      }
+
+      var _today = new Date();
+      return Date.parse(
+        _today.getFullYear().toString() + "-"
+        + pad(_today.getMonth() + 1) + "-"
+        + pad(_today.getDate())
+      );
+
+    }();
+
+    $('#recent-events .event').each(function () {
+      // console.log($(this).attr("data-event-date"));
+      var event_date = Date.parse($(this).attr("data-event-date")),
+        label = "";
+      if (today > event_date) {
+        label = "<span class='label label-info'>Finished</span>";
+      } else {
+        label = "<span class='label label-warning'>Upcoming</span>";
+      }
+      $(this).find(".event-status").append(label);
+    });
+  });
+</script>
+
+<style>
+  .event-download-button {
+    width: 10px
+  }
+</style>
+
+<!--
+vim: ts=2 sts=2 sw=2 expandtab
+-->

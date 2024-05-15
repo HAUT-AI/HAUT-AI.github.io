@@ -1,0 +1,61 @@
+---
+layout: lf-to-crlf
+---
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//TUNA//TUNA Events//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:TUNA
+X-WR-TIMEZONE:Asia/Shanghai
+X-WR-CALDESC:Events related to Tsinghua University TUNA Association
+BEGIN:VTIMEZONE
+TZID:Asia/Shanghai
+X-LIC-LOCATION:Asia/Shanghai
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:CST
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+
+{% for event in site.categories['event'] -%}
+BEGIN:VEVENT
+{% capture summary %}SUMMARY:{{ event.title }}{% endcapture -%}
+{% include ical-split-line.html content=summary -%}
+{% assign no_time = false -%}
+{% if event.time -%}
+{% assign start_end_times = event.time | split: "-" -%}
+{% if start_end_times.size >= 2 %}
+{% assign the_date = event.date | date: "%Y%m%d" | append: " " -%}
+{% assign start_time = start_end_times[0] | strip | prepend: the_date | date: "%Y%m%dT%H%M%S" -%}
+{% assign end_time = start_end_times[1] | strip | prepend: the_date | date: "%Y%m%dT%H%M%S" -%}
+{% else -%}
+{% assign no_time = true -%}
+{% endif -%}
+{% endif -%}
+{% if no_time != true -%}
+DTSTART;TZID=Asia/Shanghai:{{start_time}}
+DTEND;TZID=Asia/Shanghai:{{end_time}}
+{% else -%}
+DTSTART;VALUE=DATE:{{event.date | date: "%Y%m%d" }}
+DTEND;VALUE=DATE:{{event.date | date: "%s" | plus: 86400 | date: "%Y%m%d"}}
+{% endif -%}
+DTSTAMP:{{event.date | date: "%Y%m%dT%H%M%SZ"}}
+CREATED:{{event.date | date: "%Y%m%dT%H%M%SZ"}}
+LAST-MODIFIED:{{event.date | date: "%Y%m%dT%H%M%SZ"}}
+{% capture uid %}UID:{{event.id | slugify: "latin"}}@events.tuna.tsinghua.edu.cn{% endcapture -%}
+{% include ical-split-line.html content=uid -%}
+{% assign desc_lines = event.excerpt | split: "
+" -%}
+{% capture desc %}DESCRIPTION:{% for line in desc_lines %}{{line | strip}} {% endfor %}<p class="cal-abs-url"><a href="{{ event.url | absolute_url }}">{{ event.url | absolute_url }}</a></p>{% endcapture -%}
+{% include ical-split-line.html content=desc -%}
+LOCATION:{{event.place}}
+SEQUENCE:0
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+{% endfor -%}
+
+END:VCALENDAR

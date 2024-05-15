@@ -1,0 +1,36 @@
+### GENERAL SETTINGS ###
+
+# Site settings
+title: "河南工业大学 AI开发社"
+brand: "河南工业大学 AI开发社"
+description: "HAUT-AI"
+baseurl: "" #important: start with /
+url: "https://haut-ai.github.io"
+
+# Build settings
+highlighter: rouge
+markdown: kramdown
+kramdown:
+    input: GFM
+    hard_wrap: false
+permalink: "/:categories/:year/:title/"
+excerpt_separator: <!--more--> #use this in posts to define how long the excerpt of the post (that is shown on the Blog page) is
+
+sass:
+    sass_dir: assets/css
+future: true
+google_verify: Lwh0NyQ1YAKRuLlXXkk0_QvgJpGLRQVA8xaoRn81Ysk
+
+plugins:
+    - jekyll-babel
+    - jekyll-minifier
+    - jekyll/fontawesome/svg
+
+babel_js_extensions: 'es6'
+jekyll-minifier:
+    exclude: 'cal.ics'
+
+# Short text about your company. Shown in footer on every page and also separately on Home and Contact page.
+about: "这里是 河南工业大学AI开发社，我们致力于探索人工智能技术的各个方面，在这里与志趣相投的同学一起交流、分享和学习最新的AI技术和应用。我们定期举办讲座、研讨会，为大家提供一个互相学习和提高的平台。"
+
+include: ['_pages']
